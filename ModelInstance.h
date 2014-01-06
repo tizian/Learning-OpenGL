@@ -28,7 +28,7 @@ public:
 	glm::fquat getOrientation();
 	glm::vec3 getScale();
 	Material getMaterial();
-	ModelAsset getModel(); 
+	ModelAsset getModel();
 
 	// Returns translation matrix
 	glm::mat4 translation();
@@ -43,7 +43,7 @@ public:
 	glm::mat4 model();
 
 	// Renders the Model
-	void render(Shader shader);
+	void render(Shader shader, ModelAsset modelAsset);
 
 private:
 	ModelAsset *m_model;

@@ -70,8 +70,6 @@ int main()
 	GLint projLoc = Assets::shader.getUniformLocation("proj");
 
 	glm::mat4 model = glm::mat4();
-	glm::mat4 view = glm::mat4();
-	glm::mat4 proj = glm::mat4();
 
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
 	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view()));
@@ -88,8 +86,8 @@ int main()
 	testMaterial.setUniforms(Assets::shader);
 
 	srand ((unsigned int) time(NULL));
-	ModelInstance cubes[100];
-	for (int i = 0; i < 100; i++) {
+	ModelInstance cubes[200];
+	for (int i = 0; i < 200; i++) {
 		cubes[i] = randomModelInstance();
 	}
 
@@ -108,8 +106,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, width, height);
 
-		for (int i = 0; i < 100; i++) {
-			cubes[i].render(Assets::shader);
+		for (int i = 0; i < 200; i++) {
+			cubes[i].render(Assets::shader, Assets::cube);
 		}
 
 		glfwSwapBuffers(window);
@@ -121,10 +119,6 @@ int main()
 
 		bool camMoved = false;
 		glm::vec3 camOffset = glm::vec3(0,0,0);
-
-		glm::vec3 forward = glm::vec3(0,0,1);
-		glm::vec3 right = glm::vec3(1,0,0);
-		glm::vec3 up = glm::vec3(0,1,0);
 
 		float deltaTheta = camRotSpeed * deltaTime;
 
@@ -224,7 +218,7 @@ void setupContext() {
 
 	glfwWindowHint(GLFW_SAMPLES, 4);
 
-	window = glfwCreateWindow(640, 480, "OpenGL Project", NULL, NULL);
+	window = glfwCreateWindow(width, height, "OpenGL Project", NULL, NULL);
 
 	if (!window) {
 		fprintf(stderr, "ERROR: could not open window with GLFW3\n");
@@ -279,7 +273,10 @@ ModelInstance randomModelInstance() {
 	glm::vec3 scale(r[9], r[9], r[9]);
 
 	ModelInstance m =  ModelInstance(pos, glm::normalize(orient), scale);
-	m.setMaterial(testMaterial);
+    Material mat = testMaterial;
+    mat.setDiffuseFactor(glm::vec3(col));
+    m.setMaterial(mat);
+    m.setModel(Assets::cube);
 	return m;
 }
 

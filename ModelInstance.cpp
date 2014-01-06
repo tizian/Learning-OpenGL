@@ -51,6 +51,10 @@ void ModelInstance::setMaterial(Material material) {
 	m_material = material;
 }
 
+void ModelInstance::setModel(ModelAsset modelAsset) {
+    m_model = &modelAsset;
+}
+
 glm::vec3 ModelInstance::getPosition() {
 	return m_position;
 }
@@ -65,6 +69,10 @@ glm::vec3 ModelInstance::getScale() {
 
 Material ModelInstance::getMaterial() {
 	return m_material;
+}
+
+ModelAsset ModelInstance::getModel() {
+    return *m_model;
 }
 
 glm::mat4 ModelInstance::translation() {
@@ -83,7 +91,7 @@ glm::mat4 ModelInstance::model() {
 	return translation() * rotation() * scale();
 }
 
-void ModelInstance::render(Shader shader) {
+void ModelInstance::render(Shader shader, ModelAsset modelAsset) {
 	shader.use();
 
 	GLint modelLoc = shader.getUniformLocation("model");
@@ -95,5 +103,5 @@ void ModelInstance::render(Shader shader) {
 		printf("ERROR: Can't render ModelInstance. ModelAsset not set.\n");
 		exit(-1);
 	}
-	(*m_model).render();
+	modelAsset.render();
 }

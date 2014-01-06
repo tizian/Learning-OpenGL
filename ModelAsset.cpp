@@ -148,7 +148,7 @@ void ModelAsset::loadFromFile(const char* filename) {
 	float *uvArray;
 
 	int numTriangles = mesh->mNumFaces*3;
-	int index = 0;
+
 	int numUvCoords = mesh->GetNumUVChannels();
 
 	vertexArray = new float[numTriangles*3];
