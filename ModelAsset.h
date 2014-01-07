@@ -7,7 +7,7 @@
 class ModelAsset
 {
 public:
-	ModelAsset(Shader *shader, char *filename);
+	ModelAsset(Shader *shader, const char *filename);
 	ModelAsset(Shader *shader);
 	ModelAsset() {};
 

@@ -33,19 +33,19 @@ void Material::setShininess(float shininess) {
 	m_shininess = shininess;
 }
 
-glm::vec3 Material::getSpecularFactor() {
+glm::vec3 Material::getSpecularFactor() const {
 	return m_Ks;
 }
 
-glm::vec3 Material::getDiffuseFactor() {
+glm::vec3 Material::getDiffuseFactor() const {
 	return m_Kd;
 }
 
-glm::vec3 Material::getAmbientFactor() {
+glm::vec3 Material::getAmbientFactor() const {
 	return m_Ka;
 }
 
-float Material::getShininess() {
+float Material::getShininess() const {
 	return m_shininess;
 }
 

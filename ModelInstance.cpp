@@ -55,39 +55,39 @@ void ModelInstance::setModel(ModelAsset modelAsset) {
     m_model = &modelAsset;
 }
 
-glm::vec3 ModelInstance::getPosition() {
+glm::vec3 ModelInstance::getPosition() const {
 	return m_position;
 }
 
-glm::fquat ModelInstance::getOrientation() {
+glm::fquat ModelInstance::getOrientation() const {
 	return m_orientation;
 }
 
-glm::vec3 ModelInstance::getScale() {
+glm::vec3 ModelInstance::getScale() const {
 	return m_scale;
 }
 
-Material ModelInstance::getMaterial() {
+Material ModelInstance::getMaterial() const {
 	return m_material;
 }
 
-ModelAsset ModelInstance::getModel() {
+ModelAsset ModelInstance::getModel() const {
     return *m_model;
 }
 
-glm::mat4 ModelInstance::translation() {
+glm::mat4 ModelInstance::translation() const {
 	return glm::translate(glm::mat4(), m_position);
 }
 
-glm::mat4 ModelInstance::scale() {
+glm::mat4 ModelInstance::scale() const {
 	return glm::scale(glm::mat4(), m_scale);
 }
 
-glm::mat4 ModelInstance::rotation() {
+glm::mat4 ModelInstance::rotation() const {
 	return glm::toMat4(m_orientation);
 }
 
-glm::mat4 ModelInstance::model() {
+glm::mat4 ModelInstance::model() const {
 	return translation() * rotation() * scale();
 }
 

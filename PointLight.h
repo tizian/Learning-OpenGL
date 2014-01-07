@@ -19,11 +19,11 @@ public:
 	void setAmbientColor(glm::vec3 ambientColor);
 	void setAttenuationFactor(float attenuationFactor);
 
-	glm::vec3 getPosition();
-	glm::vec3 getSpecularColor();
-	glm::vec3 getDiffuseColor();
-	glm::vec3 getAmbientColor();
-	float getAttenuationFactor();
+	glm::vec3 getPosition() const;
+	glm::vec3 getSpecularColor() const;
+	glm::vec3 getDiffuseColor() const;
+	glm::vec3 getAmbientColor() const;
+	float getAttenuationFactor() const;
 
 	// Sets appropriate uniform values for the given shader program
 	void setUniforms(Shader shader);

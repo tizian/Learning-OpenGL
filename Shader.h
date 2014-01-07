@@ -10,10 +10,10 @@ public:
 	Shader() {};
 	Shader(const char *vertexShaderPath, const char *fragmentShaderPath);
 
-	GLint programID;
-
 	GLint getAttribLocation(const char *name) const;
 	GLint getUniformLocation(const char *name) const;
+    
+    GLint getProgramID() const;
 
 	void use();
 
@@ -26,4 +26,6 @@ private:
 
 	GLint compileShader(char *shaderSource, GLenum shaderType);
 	GLint linkShaderProgram(GLint vertexShaderID, GLint fragmentShaderID);
+    
+    GLint m_programID;
 };

@@ -7,7 +7,7 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-ModelAsset::ModelAsset(Shader *shader, char *filename){
+ModelAsset::ModelAsset(Shader *shader, const char *filename){
 	this->shader = shader;
 	glGenVertexArrays(1, &vao);		// Generate a VAO
 	glGenBuffers(1, &vbo);			// Generate a buffer object
@@ -37,25 +37,25 @@ void ModelAsset::destroy() {
 void ModelAsset::setGeometry(GLfloat *vertices, int size) {
 	this->vertices = vertices;
 	this->numVertices = size/sizeof(GLfloat)/3;
-	vPosition = glGetAttribLocation(shader->programID, "vPosition");
+	vPosition = glGetAttribLocation(shader->getProgramID(), "vPosition");
 }
 
 void ModelAsset::setNormals(GLfloat *normals, int size) {
 	this->normals = normals;
 	this->numNormals = size/sizeof(GLfloat)/3;
-	vNormal = glGetAttribLocation(shader->programID, "vNormal");
+	vNormal = glGetAttribLocation(shader->getProgramID(), "vNormal");
 }
 
 void ModelAsset::setVertexColors(GLfloat *colors, int size) {
 	this->colors = colors;
 	this->numColors = size/sizeof(GLfloat)/4;
-	vColor = glGetAttribLocation(shader->programID, "vColor");
+	vColor = glGetAttribLocation(shader->getProgramID(), "vColor");
 }
 
 void ModelAsset::setTextureCoordinates(GLfloat *uvs, int size) {
 	this->uvs = uvs;
 	this->numUVs = size/sizeof(GLfloat)/2;
-	vTexCoord = glGetAttribLocation(shader->programID, "vTexCoord");
+	vTexCoord = glGetAttribLocation(shader->getProgramID(), "vTexCoord");
 }
 
 void ModelAsset::loadVBO() {
@@ -95,13 +95,13 @@ void ModelAsset::loadVBO() {
 	if (colors) {
 		glBufferSubData(GL_ARRAY_BUFFER, offset, numColors*4*sizeof(GLfloat), this->colors);
 		glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
-		offset += numColors*4*sizeof(GLfloat);
+		// offset += numColors*4*sizeof(GLfloat);
 	}
 }
 
 void ModelAsset::render() {
 	glBindVertexArray(vao);
-	glUseProgram(shader->programID);
+	glUseProgram(shader->getProgramID());
 
 	if (vertices) {
 		glEnableVertexAttribArray(vPosition);
@@ -186,7 +186,7 @@ void ModelAsset::loadFromFile(const char* filename) {
 	setGeometry(vertexArray, numTriangles*3*sizeof(float));
 	setNormals(normalArray, numTriangles*3*sizeof(float));
 	if (numUvCoords > 0) {
-		setTextureCoordinates(normalArray, numTriangles*2*sizeof(float));
+		setTextureCoordinates(uvArray, numTriangles*2*sizeof(float));
 	}
 
 	loadVBO();

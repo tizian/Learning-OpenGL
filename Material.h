@@ -17,10 +17,10 @@ public:
 	void setAmbientFactor(glm::vec3 ambientFactor);
 	void setShininess(float shininess);
 
-	glm::vec3 getSpecularFactor();
-	glm::vec3 getDiffuseFactor();
-	glm::vec3 getAmbientFactor();
-	float getShininess();
+	glm::vec3 getSpecularFactor() const;
+	glm::vec3 getDiffuseFactor() const;
+	glm::vec3 getAmbientFactor() const;
+	float getShininess() const;
 
 	// Sets appropriate uniform values for the given shader program
 	void setUniforms(Shader shader);

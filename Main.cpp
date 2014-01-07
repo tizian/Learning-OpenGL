@@ -107,7 +107,7 @@ int main()
 		glViewport(0, 0, width, height);
 
 		for (int i = 0; i < 200; i++) {
-			cubes[i].render(Assets::shader, Assets::cube);
+			cubes[i].render(Assets::shader, Assets::sphere);
 		}
 
 		glfwSwapBuffers(window);
@@ -260,21 +260,21 @@ ModelInstance randomModelInstance() {
 	for (int i = 0; i < 6; i++) {
 		r[i] = randomFloat(-20, 20);
 	}
-	for (int i = 6; i < 9; i++) {
-		r[i] = randomFloat(0, 1);
-	}
+    r[6] = randomFloat(0, 360);
+    r[7] = randomFloat(0.5, 1.0);
+
 	for (int i = 9; i < 12; i++) {
 		r[i] = randomFloat(0.3f, 3.0f);
 	}
 
 	glm::vec3 pos(r[0], r[1], r[2]);
 	glm::fquat orient(1, r[3], r[4], r[5]);
-	glm::vec4 col(r[6], r[7], r[8], 1);
+    glm::vec3 rgb = glm::rgbColor(glm::vec3(r[6], r[7], 1.0));
 	glm::vec3 scale(r[9], r[9], r[9]);
 
 	ModelInstance m =  ModelInstance(pos, glm::normalize(orient), scale);
     Material mat = testMaterial;
-    mat.setDiffuseFactor(glm::vec3(col));
+    mat.setDiffuseFactor(rgb);
     m.setMaterial(mat);
     m.setModel(Assets::cube);
 	return m;

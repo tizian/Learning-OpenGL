@@ -12,9 +12,9 @@ Shader::Shader(const char *vertexShaderPath, const char *fragmentShaderPath) {
 	GLint vertexID = compileShader(vertexCode, GL_VERTEX_SHADER);
 	GLint fragmentID = compileShader(fragmentCode, GL_FRAGMENT_SHADER);
 
-	programID = linkShaderProgram(vertexID, fragmentID);
-	delete(vertexCode);
-	delete(fragmentCode);
+	m_programID = linkShaderProgram(vertexID, fragmentID);
+	delete[] vertexCode;
+	delete[] fragmentCode;
 	glDeleteShader(vertexID);
 	glDeleteShader(fragmentID);
 }
@@ -49,7 +49,7 @@ bool Shader::compiledStatus(GLint shaderID) {
 		char *msgBuffer = new char[logLength];
 		glGetShaderInfoLog(shaderID, logLength, NULL, msgBuffer);
 		printf("%s\n", msgBuffer);
-		delete(msgBuffer);
+		delete[] msgBuffer;
 		return false;
 	}
 }
@@ -77,7 +77,7 @@ bool Shader::linkedStatus(GLint programID) {
 		char *msgBuffer = new char[logLength];
 		glGetProgramInfoLog(programID, logLength, NULL, msgBuffer);
 		printf("%s\n", msgBuffer);
-		delete(msgBuffer);
+		delete[] msgBuffer;
 		return false;
 	}
 }
@@ -102,7 +102,7 @@ GLint Shader::getAttribLocation(const char *name) const {
 		exit(-1);
 	}
 
-	GLint attrib = glGetAttribLocation(programID, name);
+	GLint attrib = glGetAttribLocation(m_programID, name);
 	if (attrib == -1) {
 		printf("Could not get attrib location with name: %s.\n", name);
 		exit(-1);
@@ -116,7 +116,7 @@ GLint Shader::getUniformLocation(const char *name) const {
 		exit(-1);
 	}
 
-	GLint uniform = glGetUniformLocation(programID, name);
+	GLint uniform = glGetUniformLocation(m_programID, name);
 	if (uniform == -1) {
 		printf("Could not get uniform location with name: %s.\n", name);
 		exit(-1);
@@ -124,10 +124,14 @@ GLint Shader::getUniformLocation(const char *name) const {
 	return uniform;
 }
 
+GLint Shader::getProgramID() const {
+    return m_programID;
+}
+
 void Shader::use() {
-	glUseProgram(programID);
+	glUseProgram(m_programID);
 }
 
 void Shader::destroy(void) {
-	glDeleteProgram(programID);
+	glDeleteProgram(m_programID);
 }

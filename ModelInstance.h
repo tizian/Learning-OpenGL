@@ -17,30 +17,29 @@ public:
 	ModelInstance(glm::vec3 position);
 	ModelInstance();
 
-
 	void setPosition(glm::vec3 position);
 	void setOrientation(glm::fquat orientation);
 	void setScale(glm::vec3 scale);
 	void setMaterial(Material material);
 	void setModel(ModelAsset modelAsset);
 
-	glm::vec3 getPosition();
-	glm::fquat getOrientation();
-	glm::vec3 getScale();
-	Material getMaterial();
-	ModelAsset getModel();
+	glm::vec3 getPosition() const;
+	glm::fquat getOrientation() const;
+	glm::vec3 getScale() const;
+	Material getMaterial() const;
+	ModelAsset getModel() const;
 
 	// Returns translation matrix
-	glm::mat4 translation();
+	glm::mat4 translation() const;
 
 	// Returns scale matrix
-	glm::mat4 scale();
+	glm::mat4 scale() const;
 
 	// Returns rotation matrix
-	glm::mat4 rotation();
+	glm::mat4 rotation() const;
 
 	// Returns model matrix (model = translation * rotation * scale)
-	glm::mat4 model();
+	glm::mat4 model() const;
 
 	// Renders the Model
 	void render(Shader shader, ModelAsset modelAsset);

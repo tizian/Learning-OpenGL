@@ -3,26 +3,29 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-PointLight::PointLight() :	m_position(0, 0, 0),
-							m_Ls(1, 1, 1),
-							m_Ld(1, 1, 1),
-							m_La(1, 1, 1),
-							m_att(0)
-{}
+PointLight::PointLight() {
+    m_position = glm::vec3(0, 0, 0);
+    m_Ls = glm::vec3(1, 1, 1);
+    m_Ld = glm::vec3(1, 1, 1);
+    m_La = glm::vec3(1, 1, 1);
+    m_att = 0;
+}
 
-PointLight::PointLight(glm::vec3 position) :	m_position(position),
-												m_Ls(1, 1, 1),
-												m_Ld(1, 1, 1),
-												m_La(1, 1, 1),
-												m_att(0)
-{}
+PointLight::PointLight(glm::vec3 position) {
+    m_position = glm::vec3(position);
+    m_Ls = glm::vec3(1, 1, 1);
+    m_Ld = glm::vec3(1, 1, 1);
+    m_La = glm::vec3(1, 1, 1);
+    m_att = 0;
+}
 
-PointLight::PointLight(glm::vec3 position, glm::vec3 color) :	m_position(position),
-																m_Ls(color),
-																m_Ld(color),
-																m_La(color),
-																m_att(0)
-{}
+PointLight::PointLight(glm::vec3 position, glm::vec3 color) {
+    m_position = glm::vec3(position);
+    m_Ls = glm::vec3(color);
+    m_Ld = glm::vec3(color);
+    m_La = glm::vec3(color);
+    m_att = 0;
+}
 
 void PointLight::setPosition(glm::vec3 position) {
 	m_position = position;
@@ -44,23 +47,23 @@ void PointLight::setAttenuationFactor(float attenuationFactor) {
 	m_att = attenuationFactor;
 }
 
-glm::vec3 PointLight::getPosition() {
+glm::vec3 PointLight::getPosition() const {
 	return m_position;
 }
 
-glm::vec3 PointLight::getSpecularColor() {
+glm::vec3 PointLight::getSpecularColor() const {
 	return m_Ls;
 }
 
-glm::vec3 PointLight::getDiffuseColor() {
+glm::vec3 PointLight::getDiffuseColor() const {
 	return m_Ld;
 }
 
-glm::vec3 PointLight::getAmbientColor() {
+glm::vec3 PointLight::getAmbientColor() const {
 	return m_La;
 }
 
-float PointLight::getAttenuationFactor() {
+float PointLight::getAttenuationFactor() const {
 	return m_att;
 }
 
