@@ -96,7 +96,7 @@ GLint Shader::linkShaderProgram(GLint vertexShaderID, GLint fragmentShaderID) {
 	return -1;
 }
 
-GLint Shader::getAttribLocation(const char *name) const {
+GLint Shader::getAttribute(const char *name) const {
 	if (!name) {
 		printf("Could not find attrib location: Invalid name.\n");
 		exit(-1);
@@ -110,7 +110,7 @@ GLint Shader::getAttribLocation(const char *name) const {
 	return attrib;
 }
 
-GLint Shader::getUniformLocation(const char *name) const {
+GLint Shader::getUniform(const char *name) const {
 	if (!name) {
 		printf("Could not find uniform location: Invalid name.\n");
 		exit(-1);
@@ -123,6 +123,63 @@ GLint Shader::getUniformLocation(const char *name) const {
 	}
 	return uniform;
 }
+
+void Shader::setUniform(const char *name, float x, float y, float z) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniform3f(loc, x, y, z);
+    }
+}
+
+void Shader::setUniform(const char *name, const glm::vec3 v) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniform3f(loc, v.x, v.y, v.z);
+    }
+}
+
+void Shader::setUniform(const char *name, const glm::vec4 v) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniform4f(loc, v.x, v.y, v.z, v.w);
+    }
+}
+
+void Shader::setUniform(const char *name, const glm::mat3 m) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniformMatrix3fv(loc, 1, GL_FALSE, &m[0][0]);
+    }
+}
+
+void Shader::setUniform(const char *name, const glm::mat4 m) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniformMatrix4fv(loc, 1, GL_FALSE, &m[0][0]);
+    }
+}
+
+void Shader::setUniform(const char *name, float val) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniform1f(loc, val);
+    }
+}
+
+void Shader::setUniform(const char *name, int val) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniform1i(loc, val);
+    }
+}
+
+void Shader::setUniform(const char *name, bool val) {
+    GLint loc = getUniform(name);
+    if (loc >= 0) {
+        glUniform1i(loc, val);
+    }
+}
+
 
 GLint Shader::getProgramID() const {
     return m_programID;

@@ -101,7 +101,7 @@ void ModelAsset::loadVBO() {
 
 void ModelAsset::render() {
 	glBindVertexArray(vao);
-	glUseProgram(shader->getProgramID());
+    shader->use();
 
 	if (vertices) {
 		glEnableVertexAttribArray(vPosition);

@@ -92,10 +92,9 @@ glm::mat4 ModelInstance::model() const {
 }
 
 void ModelInstance::render(Shader shader, ModelAsset modelAsset) {
-	shader.use();
+//	shader.use();
 
-	GLint modelLoc = shader.getUniformLocation("model");
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model()));
+    shader.setUniform("model", model());
 	
 	m_material.setUniforms(shader);
 

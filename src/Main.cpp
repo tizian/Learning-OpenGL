@@ -34,6 +34,8 @@ float randomFloat(float a, float b);
 static int width = 640;
 static int height = 480;
 
+static const int numObjects = 100;
+
 float camSpeed = 8.0f;
 float camRotSpeed = 100.0f;
 
@@ -57,37 +59,32 @@ int main()
 	glCullFace (GL_BACK); // cull back face
 	glFrontFace (GL_CCW); // GL_CCW for counter clock-wise
 
-	Assets::shader.use();
+	Assets::phongShader.use();
 
 	camera.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 	camera.setAspectRatio((float)width/height);
-	GLint cameraPosLoc = Assets::shader.getUniformLocation("cameraPosition");
+    Assets::phongShader.setUniform("cameraPosition", camera.getPosition());
+    
+    glm::mat4 model = glm::mat4();
+    Assets::phongShader.setUniform("model", model);
+    Assets::phongShader.setUniform("model", camera.view());
+    Assets::phongShader.setUniform("model", camera.projection());
 
-	glUniform3fv(cameraPosLoc, 1, glm::value_ptr(camera.getPosition()));
-
-	GLint modelLoc = Assets::shader.getUniformLocation("model");
-	GLint viewLoc = Assets::shader.getUniformLocation("view");
-	GLint projLoc = Assets::shader.getUniformLocation("proj");
-
-	glm::mat4 model = glm::mat4();
-
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-	glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view()));
-	glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection()));
+	
 
 	PointLight testLight;
 	testLight.setDiffuseColor(glm::vec3(0.7, 0.7, 0.7));
 	testLight.setAmbientColor(glm::vec3(0.3, 0.3, 0.3));
 	testLight.setAttenuationFactor(0.0005f);
-	testLight.setUniforms(Assets::shader);
+	testLight.setUniforms(Assets::phongShader);
 	
 	testMaterial.setDiffuseFactor(glm::vec3(1, 0.5, 0));
 	testMaterial.setShininess(50);
-	testMaterial.setUniforms(Assets::shader);
+	testMaterial.setUniforms(Assets::phongShader);
 
 	srand ((unsigned int) time(NULL));
-	ModelInstance cubes[200];
-	for (int i = 0; i < 200; i++) {
+	ModelInstance cubes[numObjects];
+	for (int i = 0; i < numObjects; i++) {
 		cubes[i] = randomModelInstance();
 	}
 
@@ -106,8 +103,8 @@ int main()
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glViewport(0, 0, width, height);
 
-		for (int i = 0; i < 200; i++) {
-			cubes[i].render(Assets::shader, Assets::sphere);
+		for (int i = 0; i < numObjects; i++) {
+			cubes[i].render(Assets::phongShader, Assets::cube);
 		}
 
 		glfwSwapBuffers(window);
@@ -185,17 +182,16 @@ int main()
 		}
 		if (lightFollowsCamera) {
 				testLight.setPosition(camera.getPosition());
-				testLight.setUniforms(Assets::shader);
+				testLight.setUniforms(Assets::phongShader);
 			}
 
 		if (camMoved) {
 			camera.move(camOffset);
 			
-			Assets::shader.use();
-			glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(camera.view()));
-			glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(camera.projection()));
-			glUniform3fv(cameraPosLoc, 1, glm::value_ptr(camera.getPosition()));
-			
+			Assets::phongShader.use();
+            Assets::phongShader.setUniform("view", camera.view());
+            Assets::phongShader.setUniform("proj", camera.projection());
+            Assets::phongShader.setUniform("cameraPosition", camera.getPosition());
 		}
 	}
 
@@ -210,7 +206,7 @@ void setupContext() {
 	if (!glfwInit()) {
 		fprintf(stderr, "ERROR: could not start GLFW3\n");
 	}
-
+    
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 2);
 	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
@@ -264,7 +260,7 @@ ModelInstance randomModelInstance() {
     r[7] = randomFloat(0.5, 1.0);
 
 	for (int i = 9; i < 12; i++) {
-		r[i] = randomFloat(0.3f, 3.0f);
+		r[i] = randomFloat(0.2f, 5.0f);
 	}
 
 	glm::vec3 pos(r[0], r[1], r[2]);

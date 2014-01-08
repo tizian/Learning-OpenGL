@@ -51,13 +51,8 @@ float Material::getShininess() const {
 
 void Material::setUniforms(Shader shader) {
 	shader.use();
-	GLint KsLoc = shader.getUniformLocation("material.Ks");
-	GLint KdLoc = shader.getUniformLocation("material.Kd");
-	GLint KaLoc = shader.getUniformLocation("material.Ka");
-	GLint shininessLoc = shader.getUniformLocation("material.shininess");
-
-	glUniform3fv(KsLoc, 1, glm::value_ptr(m_Ks));
-	glUniform3fv(KdLoc, 1, glm::value_ptr(m_Kd));
-	glUniform3fv(KaLoc, 1, glm::value_ptr(m_Ka));
-	glUniform1fv(shininessLoc, 1, &m_shininess);
+    shader.setUniform("material.Ks", m_Ks);
+    shader.setUniform("material.Kd", m_Kd);
+    shader.setUniform("material.Ka", m_Ka);
+    shader.setUniform("material.shininess", m_shininess);
 }

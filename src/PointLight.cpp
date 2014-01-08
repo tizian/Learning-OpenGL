@@ -69,15 +69,9 @@ float PointLight::getAttenuationFactor() const {
 
 void PointLight::setUniforms(Shader shader) {
 	shader.use();
-	GLint posLoc = shader.getUniformLocation("light.position");
-	GLint LsLoc = shader.getUniformLocation("light.Ls");
-	GLint LdLoc = shader.getUniformLocation("light.Ld");
-	GLint LaLoc = shader.getUniformLocation("light.La");
-	GLint attLoc = shader.getUniformLocation("light.attenuation");
-
-	glUniform3fv(posLoc, 1, glm::value_ptr(m_position));
-	glUniform3fv(LsLoc, 1, glm::value_ptr(m_Ls));
-	glUniform3fv(LdLoc, 1, glm::value_ptr(m_Ld));
-	glUniform3fv(LaLoc, 1, glm::value_ptr(m_La));
-	glUniform1fv(attLoc, 1, &m_att);
+    shader.setUniform("light.position", m_position);
+    shader.setUniform("light.Ls", m_Ls);
+    shader.setUniform("light.Ld", m_Ld);
+    shader.setUniform("light.La", m_La);
+    shader.setUniform("light.attenuation", m_att);
 }

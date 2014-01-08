@@ -34,6 +34,7 @@ void main() {
 	//vec4 surfaceColor = texture(tex, fTexCoord);
 	vec3 surfaceToLight = normalize(light.position - surfacePosition);
 	vec3 surfaceToCamera = normalize(cameraPosition - surfacePosition);
+    vec3 halfway = normalize(surfaceToCamera + surfaceToLight);
 
 	// Ambient intensity
 	vec3 Ia = light.La * material.Ka;
@@ -45,7 +46,7 @@ void main() {
 	// specular intensity
 	float RVexp = 0.0;
 	if (NL > 0)
-		RVexp = pow(max(0.0, dot(surfaceToCamera, reflect(-surfaceToLight, normal))), material.shininess);
+		RVexp = pow(max(0.0, dot(halfway, normal)), material.shininess);
 	vec3 Is = light.Ls * material.Ks * RVexp;
 
 	// Attenuation
