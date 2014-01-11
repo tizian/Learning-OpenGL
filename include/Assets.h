@@ -14,18 +14,19 @@ namespace Assets {
 
 	void init() {
 		phongShader = Shader("Shaders/phong_vertex.glsl", "Shaders/phong_fragment.glsl");
-
-		cube = ModelAsset(&phongShader, "Models/cube.dae");
-
-		sphere= ModelAsset(&phongShader, "Models/sphere.dae");
-
-		bunny = ModelAsset(&phongShader, "Models/bunny.dae");
-
-		suzanne = ModelAsset(&phongShader, "Models/suzanne.dae");
+        
+        cube = ModelAsset(&phongShader, "Models/cube.dae");
+        
+        sphere = ModelAsset(&phongShader, "Models/sphere.dae");
+        
+        bunny = ModelAsset(&phongShader, "Models/bunny.dae");
+        
+        suzanne = ModelAsset(&phongShader, "Models/suzanne.dae");
 	}
 
 	void destroy() {
 		phongShader.destroy();
+        
 		cube.destroy();
 		sphere.destroy();
 		bunny.destroy();

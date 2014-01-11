@@ -3,7 +3,7 @@
 #include <GL/glew.h>
 #include <glm/gtc/type_ptr.hpp>
 
-Material::Material(glm::vec3 specularFactor, glm::vec3 diffuseFactor, glm::vec3 ambientFactor, float shininess) {
+Material::Material(const glm::vec3 & specularFactor, const glm::vec3 & diffuseFactor, const glm::vec3 & ambientFactor, float shininess) {
 	m_Ks = glm::vec3(specularFactor);
 	m_Kd = glm::vec3(diffuseFactor);
 	m_Ka = glm::vec3(ambientFactor);
@@ -17,15 +17,15 @@ Material::Material() {
 	m_shininess = 1;
 }
 
-void Material::setSpecularFactor(glm::vec3 specularFactor) {
+void Material::setSpecularFactor(const glm::vec3 & specularFactor) {
 	m_Ks = specularFactor;
 }
 
-void Material::setDiffuseFactor(glm::vec3 diffuseFactor) {
+void Material::setDiffuseFactor(const glm::vec3 & diffuseFactor) {
 	m_Kd = diffuseFactor;
 }
 
-void Material::setAmbientFactor(glm::vec3 ambientFactor) {
+void Material::setAmbientFactor(const glm::vec3 & ambientFactor) {
 	m_Ka = ambientFactor;
 }
 
@@ -49,10 +49,10 @@ float Material::getShininess() const {
 	return m_shininess;
 }
 
-void Material::setUniforms(Shader shader) {
-	shader.use();
-    shader.setUniform("material.Ks", m_Ks);
-    shader.setUniform("material.Kd", m_Kd);
-    shader.setUniform("material.Ka", m_Ka);
-    shader.setUniform("material.shininess", m_shininess);
+void Material::setUniforms(Shader * shader) {
+	shader->use();
+    shader->setUniform("material.Ks", m_Ks);
+    shader->setUniform("material.Kd", m_Kd);
+    shader->setUniform("material.Ka", m_Ka);
+    shader->setUniform("material.shininess", m_shininess);
 }

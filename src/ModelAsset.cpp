@@ -7,137 +7,137 @@
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
-ModelAsset::ModelAsset(Shader *shader, const char *filename){
-	this->shader = shader;
-	glGenVertexArrays(1, &vao);		// Generate a VAO
-	glGenBuffers(1, &vbo);			// Generate a buffer object
-	vertices = normals = uvs = colors = NULL;
-	numVertices = numNormals = numUVs = numColors = 0;
+ModelAsset::ModelAsset(Shader * shader, const std::string & filename) {
+	m_shader = shader;
+	glGenVertexArrays(1, &m_vao);		// Generate a VAO
+	glGenBuffers(1, &m_vbo);			// Generate a buffer object
+	m_vertices = m_normals = m_uvs = m_colors = NULL;
+	m_numVertices = m_numNormals = m_numUVs = m_numColors = 0;
 
 	loadFromFile(filename);
 }
 
-ModelAsset::ModelAsset(Shader *shader) {
-	this->shader = shader;
-	glGenVertexArrays(1, &vao);		// Generate a VAO
-	glGenBuffers(1, &vbo);			// Generate a buffer object
-	vertices = normals = uvs = colors = NULL;
-	numVertices = numNormals = numUVs = numColors = 0;
+ModelAsset::ModelAsset(Shader * shader) {
+	m_shader = shader;
+	glGenVertexArrays(1, &m_vao);		// Generate a VAO
+	glGenBuffers(1, &m_vbo);			// Generate a buffer object
+	m_vertices = m_normals = m_uvs = m_colors = NULL;
+	m_numVertices = m_numNormals = m_numUVs = m_numColors = 0;
 }
 
 void ModelAsset::destroy() {
-	glDisableVertexAttribArray(vPosition);
-	glDisableVertexAttribArray(vNormal);
-	glDisableVertexAttribArray(vTexCoord);
-	glDisableVertexAttribArray(vColor);
-	glDeleteBuffers(1, &vbo);
-	glDeleteVertexArrays(1, &vao);
+	glDisableVertexAttribArray(m_vPosition);
+	glDisableVertexAttribArray(m_vNormal);
+	glDisableVertexAttribArray(m_vTexCoord);
+	glDisableVertexAttribArray(m_vColor);
+	glDeleteBuffers(1, &m_vbo);
+	glDeleteVertexArrays(1, &m_vao);
 }
 
-void ModelAsset::setGeometry(GLfloat *vertices, int size) {
-	this->vertices = vertices;
-	this->numVertices = size/sizeof(GLfloat)/3;
-	vPosition = glGetAttribLocation(shader->getProgramID(), "vPosition");
+void ModelAsset::setGeometry(GLfloat *vertices, int numVertices) {
+	this->m_vertices = vertices;
+	this->m_numVertices = numVertices;
+	m_vPosition = glGetAttribLocation(m_shader->getProgramID(), "vPosition");
 }
 
-void ModelAsset::setNormals(GLfloat *normals, int size) {
-	this->normals = normals;
-	this->numNormals = size/sizeof(GLfloat)/3;
-	vNormal = glGetAttribLocation(shader->getProgramID(), "vNormal");
+void ModelAsset::setNormals(GLfloat *normals, int numNormals) {
+	this->m_normals = normals;
+	this->m_numNormals = numNormals;
+	m_vNormal = glGetAttribLocation(m_shader->getProgramID(), "vNormal");
 }
 
-void ModelAsset::setVertexColors(GLfloat *colors, int size) {
-	this->colors = colors;
-	this->numColors = size/sizeof(GLfloat)/4;
-	vColor = glGetAttribLocation(shader->getProgramID(), "vColor");
+void ModelAsset::setVertexColors(GLfloat *colors, int numColors) {
+	this->m_colors = colors;
+	this->m_numColors = numColors;
+	m_vColor = glGetAttribLocation(m_shader->getProgramID(), "vColor");
 }
 
-void ModelAsset::setTextureCoordinates(GLfloat *uvs, int size) {
-	this->uvs = uvs;
-	this->numUVs = size/sizeof(GLfloat)/2;
-	vTexCoord = glGetAttribLocation(shader->getProgramID(), "vTexCoord");
+void ModelAsset::setTextureCoordinates(GLfloat *uvs, int numUVs) {
+	this->m_uvs = uvs;
+	this->m_numUVs = numUVs;
+	m_vTexCoord = glGetAttribLocation(m_shader->getProgramID(), "vTexCoord");
 }
 
 void ModelAsset::loadVBO() {
 	// Bind the vao
-	glBindVertexArray(vao);
+	glBindVertexArray(m_vao);
 
 	// Bind the vbo as the current VBO.
-	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
 	int offset = 0;
 
 	// Calculate the size of the buffer we need
-	int sizeBuffer = (3*numVertices + 3*numNormals + 2*numUVs + 4*numColors) * sizeof(GLfloat);
+	int sizeBuffer = (3*m_numVertices + 3*m_numNormals + 2*m_numUVs + 4*m_numColors) * sizeof(GLfloat);
 
 	// Call glBufferData and tell the GPU how big the buffer is. We don't load the data yet.
 	glBufferData(GL_ARRAY_BUFFER, sizeBuffer, NULL, GL_STATIC_DRAW);
 
 	// If the vertices aren't NULL, load them onto the GPU. Offset is currently 0.
-	if (vertices) {
-		glBufferSubData(GL_ARRAY_BUFFER, offset, numVertices*3*sizeof(GLfloat), this->vertices);
-		glVertexAttribPointer(vPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
-		offset += numVertices*3*sizeof(GLfloat);
+	if (m_vertices) {
+		glBufferSubData(GL_ARRAY_BUFFER, offset, m_numVertices*sizeof(GLfloat), this->m_vertices);
+		glVertexAttribPointer(m_vPosition, 3, GL_FLOAT, GL_FALSE, 0, 0);
+		offset += m_numVertices*3*sizeof(GLfloat);
 	}
 	// Load in the vertex normals right after the vertex coordinates.
-	if (normals) {
-		glBufferSubData(GL_ARRAY_BUFFER, offset, numVertices*3*sizeof(GLfloat), this->normals);
-		glVertexAttribPointer(vNormal, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
-		offset += numNormals*3*sizeof(GLfloat);
+	if (m_normals) {
+		glBufferSubData(GL_ARRAY_BUFFER, offset, m_numNormals*sizeof(GLfloat), this->m_normals);
+		glVertexAttribPointer(m_vNormal, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
+		offset += m_numNormals*3*sizeof(GLfloat);
 	}
 	// Load in the texture coordinates right after the normals.
-	if (uvs) {
-		glBufferSubData(GL_ARRAY_BUFFER, offset, numUVs*2*sizeof(GLfloat), this->uvs);
-		glVertexAttribPointer(vTexCoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
-		offset += numUVs*2*sizeof(GLfloat);
+	if (m_uvs) {
+		glBufferSubData(GL_ARRAY_BUFFER, offset, m_numUVs*sizeof(GLfloat), this->m_uvs);
+		glVertexAttribPointer(m_vTexCoord, 2, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
+		offset += m_numUVs*2*sizeof(GLfloat);
 	}
 	// Load in the color coordinates right after the texture coordinates.
-	if (colors) {
-		glBufferSubData(GL_ARRAY_BUFFER, offset, numColors*4*sizeof(GLfloat), this->colors);
-		glVertexAttribPointer(vColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
+	if (m_colors) {
+		glBufferSubData(GL_ARRAY_BUFFER, offset, m_numColors*sizeof(GLfloat), this->m_colors);
+		glVertexAttribPointer(m_vColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(offset));
 		// offset += numColors*4*sizeof(GLfloat);
 	}
 }
 
 void ModelAsset::render() {
-	glBindVertexArray(vao);
-    shader->use();
+	glBindVertexArray(m_vao);
+    m_shader->use();
 
-	if (vertices) {
-		glEnableVertexAttribArray(vPosition);
+	if (m_vertices) {
+		glEnableVertexAttribArray(m_vPosition);
 	}
-	if (normals) {
-		glEnableVertexAttribArray(vNormal);
+	if (m_normals) {
+		glEnableVertexAttribArray(m_vNormal);
 	}
-	if (uvs) {
-		glEnableVertexAttribArray(vTexCoord);
+	if (m_uvs) {
+		glEnableVertexAttribArray(m_vTexCoord);
 	}
-	if (colors) {
-		glEnableVertexAttribArray(vColor);
+	if (m_colors) {
+		glEnableVertexAttribArray(m_vColor);
 	}
 
 	// Actual draw
-	glDrawArrays(GL_TRIANGLES, 0, numVertices);
+	glDrawArrays(GL_TRIANGLES, 0, m_numVertices);
 
-	if (vertices) {
-		glDisableVertexAttribArray(vPosition);
+	if (m_vertices) {
+		glDisableVertexAttribArray(m_vPosition);
 	}
-	if (normals) {
-		glDisableVertexAttribArray(vNormal);
+	if (m_normals) {
+		glDisableVertexAttribArray(m_vNormal);
 	}
-	if (uvs) {
-		glDisableVertexAttribArray(vTexCoord);
+	if (m_uvs) {
+		glDisableVertexAttribArray(m_vTexCoord);
 	}
-	if (colors) {
-		glDisableVertexAttribArray(vColor);
+	if (m_colors) {
+		glDisableVertexAttribArray(m_vColor);
 	}
 }
 
-void ModelAsset::loadFromFile(const char* filename) {
+void ModelAsset::loadFromFile(const std::string & filename) {
 	Assimp::Importer importer;
 	const aiScene *scene = importer.ReadFile(filename, aiProcessPreset_TargetRealtime_Fast);
 	if (!scene) {
-		printf("ERROR: reading mesh %s\n", filename);
+		printf("ERROR: reading mesh %s\n", filename.c_str());
 		exit(-1);
 	}
 
@@ -183,10 +183,10 @@ void ModelAsset::loadFromFile(const char* filename) {
 	normalArray -= numTriangles*3;
 	vertexArray -= numTriangles*3;
 
-	setGeometry(vertexArray, numTriangles*3*sizeof(float));
-	setNormals(normalArray, numTriangles*3*sizeof(float));
+	setGeometry(vertexArray, numTriangles*3);
+	setNormals(normalArray, numTriangles*3);
 	if (numUvCoords > 0) {
-		setTextureCoordinates(uvArray, numTriangles*2*sizeof(float));
+		setTextureCoordinates(uvArray, numTriangles*2);
 	}
 
 	loadVBO();

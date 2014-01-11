@@ -11,7 +11,7 @@ PointLight::PointLight() {
     m_att = 0;
 }
 
-PointLight::PointLight(glm::vec3 position) {
+PointLight::PointLight(const glm::vec3 & position) {
     m_position = glm::vec3(position);
     m_Ls = glm::vec3(1, 1, 1);
     m_Ld = glm::vec3(1, 1, 1);
@@ -19,7 +19,7 @@ PointLight::PointLight(glm::vec3 position) {
     m_att = 0;
 }
 
-PointLight::PointLight(glm::vec3 position, glm::vec3 color) {
+PointLight::PointLight(const glm::vec3 & position, const glm::vec3 & color) {
     m_position = glm::vec3(position);
     m_Ls = glm::vec3(color);
     m_Ld = glm::vec3(color);
@@ -27,19 +27,19 @@ PointLight::PointLight(glm::vec3 position, glm::vec3 color) {
     m_att = 0;
 }
 
-void PointLight::setPosition(glm::vec3 position) {
+void PointLight::setPosition(const glm::vec3 & position) {
 	m_position = position;
 }
 
-void PointLight::setSpecularColor(glm::vec3 specularColor) {
+void PointLight::setSpecularColor(const glm::vec3 & specularColor) {
 	m_Ls = specularColor;
 }
 
-void PointLight::setDiffuseColor(glm::vec3 diffuseColor) {
+void PointLight::setDiffuseColor(const glm::vec3 & diffuseColor) {
 	m_Ld = diffuseColor;
 }
 
-void PointLight::setAmbientColor(glm::vec3 ambientColor) {
+void PointLight::setAmbientColor(const glm::vec3 & ambientColor) {
 	m_La = ambientColor;
 }
 
@@ -67,11 +67,11 @@ float PointLight::getAttenuationFactor() const {
 	return m_att;
 }
 
-void PointLight::setUniforms(Shader shader) {
-	shader.use();
-    shader.setUniform("light.position", m_position);
-    shader.setUniform("light.Ls", m_Ls);
-    shader.setUniform("light.Ld", m_Ld);
-    shader.setUniform("light.La", m_La);
-    shader.setUniform("light.attenuation", m_att);
+void PointLight::setUniforms(Shader * shader) {
+	shader->use();
+    shader->setUniform("light.position", m_position);
+    shader->setUniform("light.Ls", m_Ls);
+    shader->setUniform("light.Ld", m_Ld);
+    shader->setUniform("light.La", m_La);
+    shader->setUniform("light.attenuation", m_att);
 }

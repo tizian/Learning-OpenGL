@@ -29,11 +29,11 @@ const glm::vec3 Camera::forward() const {
 	return glm::vec3(glm::row(rotation(), 2));
 }
 
-void Camera::setPosition(const glm::vec3 position) {
+void Camera::setPosition(const glm::vec3 & position) {
 	m_position = position;
 }
 
-void Camera::move(const glm::vec3 delta) {
+void Camera::move(const glm::vec3 & delta) {
 	m_position += delta;
 }
 
@@ -49,7 +49,7 @@ void Camera::moveForwardBackward(float delta) {
 	m_position -= delta * forward();
 }
 
-void Camera::rotate(float angle, glm::vec3 axis) {
+void Camera::rotate(float angle, glm::vec3 & axis) {
 	glm::fquat rot = glm::normalize(glm::angleAxis(angle, axis));
 	
 	m_orientation = m_orientation * rot;

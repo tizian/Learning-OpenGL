@@ -10,13 +10,13 @@ class PointLight
 {
 public:
 	PointLight();
-	PointLight(glm::vec3 position);
-	PointLight(glm::vec3 position, glm::vec3 color);
+	PointLight(const glm::vec3 & position);
+	PointLight(const glm::vec3 & position, const glm::vec3 & color);
 
-	void setPosition(glm::vec3 position);
-	void setSpecularColor(glm::vec3 specularColor);
-	void setDiffuseColor(glm::vec3 diffuseColor);
-	void setAmbientColor(glm::vec3 ambientColor);
+	void setPosition(const glm::vec3 & position);
+	void setSpecularColor(const glm::vec3 & specularColor);
+	void setDiffuseColor(const glm::vec3 & diffuseColor);
+	void setAmbientColor(const glm::vec3 & ambientColor);
 	void setAttenuationFactor(float attenuationFactor);
 
 	glm::vec3 getPosition() const;
@@ -26,7 +26,7 @@ public:
 	float getAttenuationFactor() const;
 
 	// Sets appropriate uniform values for the given shader program
-	void setUniforms(Shader shader);
+	void setUniforms(Shader * shader);
 
 private:
 	glm::vec3 m_position;

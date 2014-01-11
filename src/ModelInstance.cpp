@@ -3,27 +3,19 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-ModelInstance::ModelInstance(glm::vec3 position, glm::fquat orientation, glm::vec3 scale, Material material) {
+ModelInstance::ModelInstance(const glm::vec3 & position, const glm::fquat & orientation, const glm::vec3 & scale) {
 	m_position = position;
 	m_orientation = orientation;
 	m_scale = scale;
-	m_material = material;
+//	m_material = NULL;
 	m_model = NULL;
 }
 
-ModelInstance::ModelInstance(glm::vec3 position, glm::fquat orientation, glm::vec3 scale) {
-	m_position = position;
-	m_orientation = orientation;
-	m_scale = scale;
-	m_material = Material();
-	m_model = NULL;
-}
-
-ModelInstance::ModelInstance(glm::vec3 position) {
+ModelInstance::ModelInstance(const glm::vec3 & position) {
 	m_position = position;
 	m_orientation = glm::fquat(1, 0, 0, 0);
 	m_scale = glm::vec3(1, 1, 1);
-	m_material = Material();
+//	m_material = NULL;
 	m_model = NULL;
 }
 
@@ -31,19 +23,19 @@ ModelInstance::ModelInstance() {
 	m_position = glm::vec3(1, 1, 1);
 	m_orientation = glm::fquat(1, 0, 0, 0);
 	m_scale = glm::vec3(1, 1, 1);
-	m_material = Material();
+//	m_material = NULL;
 	m_model = NULL;
 }
 
-void ModelInstance::setPosition(glm::vec3 position) {
+void ModelInstance::setPosition(const glm::vec3 & position) {
 	m_position = position;
 }
 
-void ModelInstance::setOrientation(glm::fquat orientation) {
+void ModelInstance::setOrientation(const glm::fquat & orientation) {
 	m_orientation = orientation;
 }
 
-void ModelInstance::setScale(glm::vec3 scale) {
+void ModelInstance::setScale(const glm::vec3 & scale) {
 	m_scale = scale;
 }
 
@@ -51,8 +43,8 @@ void ModelInstance::setMaterial(Material material) {
 	m_material = material;
 }
 
-void ModelInstance::setModel(ModelAsset modelAsset) {
-    m_model = &modelAsset;
+void ModelInstance::setModel(ModelAsset * modelAsset) {
+    m_model = modelAsset;
 }
 
 glm::vec3 ModelInstance::getPosition() const {
@@ -91,10 +83,10 @@ glm::mat4 ModelInstance::model() const {
 	return translation() * rotation() * scale();
 }
 
-void ModelInstance::render(Shader shader, ModelAsset modelAsset) {
+void ModelInstance::render(Shader * shader, ModelAsset * modelAsset) {
 //	shader.use();
 
-    shader.setUniform("model", model());
+    shader->setUniform("model", model());
 	
 	m_material.setUniforms(shader);
 
@@ -102,5 +94,5 @@ void ModelInstance::render(Shader shader, ModelAsset modelAsset) {
 		printf("ERROR: Can't render ModelInstance. ModelAsset not set.\n");
 		exit(-1);
 	}
-	modelAsset.render();
+	modelAsset->render();
 }

@@ -12,16 +12,15 @@
 class ModelInstance
 {
 public:
-	ModelInstance(glm::vec3 position, glm::fquat orientation, glm::vec3 scale, Material material);
-	ModelInstance(glm::vec3 position, glm::fquat orientation, glm::vec3 scale);
-	ModelInstance(glm::vec3 position);
+	ModelInstance(const glm::vec3 & position, const glm::fquat & orientation, const glm::vec3 & scale);
+	ModelInstance(const glm::vec3 & position);
 	ModelInstance();
 
-	void setPosition(glm::vec3 position);
-	void setOrientation(glm::fquat orientation);
-	void setScale(glm::vec3 scale);
+	void setPosition(const glm::vec3 & position);
+	void setOrientation(const glm::fquat & orientation);
+	void setScale(const glm::vec3 & scale);
 	void setMaterial(Material material);
-	void setModel(ModelAsset modelAsset);
+	void setModel(ModelAsset * modelAsset);
 
 	glm::vec3 getPosition() const;
 	glm::fquat getOrientation() const;
@@ -42,11 +41,13 @@ public:
 	glm::mat4 model() const;
 
 	// Renders the Model
-	void render(Shader shader, ModelAsset modelAsset);
+	void render(Shader * shader, ModelAsset * modelAsset);
 
 private:
-	ModelAsset *m_model;
+	ModelAsset * m_model;
+    
 	Material m_material;
+    
 	glm::vec3 m_position;
 	glm::fquat m_orientation;
 	glm::vec3 m_scale;

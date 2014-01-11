@@ -76,11 +76,11 @@ int main()
 	testLight.setDiffuseColor(glm::vec3(0.7, 0.7, 0.7));
 	testLight.setAmbientColor(glm::vec3(0.3, 0.3, 0.3));
 	testLight.setAttenuationFactor(0.0005f);
-	testLight.setUniforms(Assets::phongShader);
+	testLight.setUniforms(&Assets::phongShader);
 	
 	testMaterial.setDiffuseFactor(glm::vec3(1, 0.5, 0));
 	testMaterial.setShininess(50);
-	testMaterial.setUniforms(Assets::phongShader);
+	testMaterial.setUniforms(&Assets::phongShader);
 
 	srand ((unsigned int) time(NULL));
 	ModelInstance cubes[numObjects];
@@ -104,7 +104,7 @@ int main()
 		glViewport(0, 0, width, height);
 
 		for (int i = 0; i < numObjects; i++) {
-			cubes[i].render(Assets::phongShader, Assets::cube);
+			cubes[i].render(&Assets::phongShader, &Assets::cube);
 		}
 
 		glfwSwapBuffers(window);
@@ -182,7 +182,7 @@ int main()
 		}
 		if (lightFollowsCamera) {
 				testLight.setPosition(camera.getPosition());
-				testLight.setUniforms(Assets::phongShader);
+				testLight.setUniforms(&Assets::phongShader);
 			}
 
 		if (camMoved) {
@@ -272,7 +272,7 @@ ModelInstance randomModelInstance() {
     Material mat = testMaterial;
     mat.setDiffuseFactor(rgb);
     m.setMaterial(mat);
-    m.setModel(Assets::cube);
+    m.setModel(&Assets::cube);
 	return m;
 }
 

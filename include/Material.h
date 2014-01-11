@@ -9,12 +9,12 @@
 class Material
 {
 public:
-	Material(glm::vec3 specularFactor, glm::vec3 diffuseFactor, glm::vec3 ambientFactor, float specularExp);
+	Material(const glm::vec3 & specularFactor, const glm::vec3 & diffuseFactor, const glm::vec3 & ambientFactor, float specularExp);
 	Material();
 
-	void setSpecularFactor(glm::vec3 specularFactor);
-	void setDiffuseFactor(glm::vec3 diffuseFactor);
-	void setAmbientFactor(glm::vec3 ambientFactor);
+	void setSpecularFactor(const glm::vec3 & specularFactor);
+	void setDiffuseFactor(const glm::vec3 & diffuseFactor);
+	void setAmbientFactor(const glm::vec3 & ambientFactor);
 	void setShininess(float shininess);
 
 	glm::vec3 getSpecularFactor() const;
@@ -23,7 +23,7 @@ public:
 	float getShininess() const;
 
 	// Sets appropriate uniform values for the given shader program
-	void setUniforms(Shader shader);
+	void setUniforms(Shader * shader);
 
 private:
 	glm::vec3 m_Ks;	// Specular reflectant factor
