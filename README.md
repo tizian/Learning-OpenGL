@@ -12,8 +12,8 @@ Used Libraries
 
 Implemented Features
 --------------------
-* A free Moving Quaternion based camera.
-* 3D Model loading and rendering
+* A free moving quaternion based camera.
+* 3D model loading and rendering
 * Different surface material properties
 * A point light
 * Phong Ilumination Model
